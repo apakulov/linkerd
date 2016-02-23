@@ -11,7 +11,7 @@ class LinkerTest extends FunSuite {
   def parse(
     yaml: String,
     protos: Seq[ProtocolInitializer] = Seq(TestProtocol.Plain, TestProtocol.Fancy),
-    namers: Seq[NamerInitializer] = Seq(TestNamer)
+    namers: Seq[NamerInitializer] = Seq(TestNamerInitializer)
   ) = {
     Linker.load(yaml, protos ++ namers)
   }
@@ -193,6 +193,6 @@ routers:
   servers:
   - port: 1
     """
-    intercept[ConflictingSubtypes] { parse(yaml, namers = Seq(TestNamer, ConflictingNamer)) }
+    intercept[ConflictingSubtypes] { parse(yaml, namers = Seq(TestNamerInitializer, ConflictingNamerInitializer)) }
   }
 }

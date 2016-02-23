@@ -23,12 +23,11 @@ import scala.io.Source
  *   authTokenFile: ../auth.token
  * </pre>
  */
-class k8s extends NamerInitializer {
-  val configClass = classOf[k8sConfig]
-  val configId = "io.l5d.experimental.k8s"
+class k8sInitializer extends NamerInitializer {
+  val configClass = classOf[k8s]
 }
 
-object k8s extends k8s {
+object k8sInitializer extends k8sInitializer {
   def authTokenFilter(authTokenFile: String): Filter[Request, Response, Request, Response] = {
     val token = Source.fromFile(authTokenFile).mkString
     if (token.isEmpty)
@@ -38,7 +37,7 @@ object k8s extends k8s {
   }
 }
 
-case class k8sConfig(
+case class k8s(
   host: Option[String],
   port: Option[Port],
   tls: Option[Boolean],
@@ -54,7 +53,7 @@ case class k8sConfig(
     case None => 443
   }
   private[this] def authFilter: Filter[Request, Response, Request, Response] = authTokenFile match {
-    case Some(path) => k8s.authTokenFilter(path)
+    case Some(path) => k8sInitializer.authTokenFilter(path)
     case None => Filter.identity
   }
   /**

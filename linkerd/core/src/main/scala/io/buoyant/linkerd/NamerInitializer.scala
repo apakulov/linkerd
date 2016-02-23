@@ -38,4 +38,6 @@ trait NamerConfig {
   def newNamer(): Namer
 }
 
-abstract class NamerInitializer extends ConfigInitializer
+abstract class NamerInitializer extends ConfigInitializer {
+  override def configId = configClass.getName
+}
